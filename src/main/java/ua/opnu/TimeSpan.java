@@ -3,44 +3,71 @@ package ua.opnu;
 
 public class TimeSpan {
 
-    // TODO: add class fields
+    private int hours;
+    private int minutes;
 
-    TimeSpan(int hours, int minutes) {
-        // TODO: write constructor body
+    public TimeSpan(int hours, int minutes) {
+        if (hours < 0 || minutes < 0 || minutes >= 60) {
+            this.hours = 0;
+            this.minutes = 0;
+        } else {
+            this.hours = hours;
+            this.minutes = minutes;
+        }
     }
 
-    int getHours() {
-        return 0;
+    public int getHours() {
+        return this.hours;
     }
 
-    int getMinutes() {
-        // TODO: write method body
-        return 0;
+    public int getMinutes() {
+        return this.minutes;
     }
 
-    void add(int hours, int minutes) {
-        // TODO: write method body
+    public void add(int hours, int minutes) {
+        if (hours < 0 || minutes < 0 || minutes >= 60) {
+            return;
+        }
+
+        int currentTotalMinutes = this.hours * 60 + this.minutes;
+        int addedTotalMinutes = hours * 60 + minutes;
+        int newTotalMinutes = currentTotalMinutes + addedTotalMinutes;
+
+        this.hours = newTotalMinutes / 60;
+        this.minutes = newTotalMinutes % 60;
     }
 
-    void addTimeSpan(TimeSpan timespan) {
-        // TODO: write method body
+    public void addTimeSpan(TimeSpan timespan) {
+        add(timespan.getHours(), timespan.getMinutes());
     }
 
-    double getTotalHours() {
-        // TODO: write method body
-        return 0;
+    public double getTotalHours() {
+        return this.hours + (this.minutes / 60.0);
     }
 
-    int getTotalMinutes() {
-        // TODO: write method body
-        return 0;
+    public int getTotalMinutes() {
+        return this.hours * 60 + this.minutes;
     }
 
-    void subtract(TimeSpan span) {
-        // TODO: write method body
+    public void subtract(TimeSpan span) {
+        int thisAsMinutes = this.getTotalMinutes();
+        int spanAsMinutes = span.getTotalMinutes();
+
+        if (thisAsMinutes < spanAsMinutes) {
+            return;
+        }
+
+        int resultAsMinutes = thisAsMinutes - spanAsMinutes;
+        this.hours = resultAsMinutes / 60;
+        this.minutes = resultAsMinutes % 60;
     }
 
-    void scale(int factor) {
-        // TODO: write method body
+    public void scale(int factor) {
+        if (factor <= 0) {
+            return;
+        }
+        int totalMinutes = this.getTotalMinutes() * factor;
+        this.hours = totalMinutes / 60;
+        this.minutes = totalMinutes % 60;
     }
 }
